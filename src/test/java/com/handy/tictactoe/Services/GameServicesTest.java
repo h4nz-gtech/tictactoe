@@ -40,9 +40,9 @@ public class GameServicesTest {
 
     @Test
     void startGame_Success() throws Exception {
-        StartRequestDto requestDto = StartRequestDto.builder()
-                .boardSize(3)
-                .build();
+        StartRequestDto requestDto = new StartRequestDto();
+        requestDto.setBoardSize(3);
+
         List<List<String>> cells = new ArrayList<>();
         List<String> row = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
@@ -70,9 +70,9 @@ public class GameServicesTest {
                 .y(1)
                 .build();
 
-        StartRequestDto requestDto = StartRequestDto.builder()
-                .boardSize(3)
-                .build();
+        StartRequestDto requestDto = new StartRequestDto();
+        requestDto.setBoardSize(3);
+
         List<List<String>> cells = new ArrayList<>();
         List<String> row = new ArrayList<>();
         List<String> row2 = new ArrayList<>();

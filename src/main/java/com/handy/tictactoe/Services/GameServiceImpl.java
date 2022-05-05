@@ -32,6 +32,7 @@ public class GameServiceImpl implements GameServices {
 
     @Override
     public Player move(MoveRequestDto moveRequestDto) {
+        changePlayer();
         player.setBoard(playerMove(moveRequestDto.getX(),moveRequestDto.getY()));
         return player;
     }
@@ -53,5 +54,14 @@ public class GameServiceImpl implements GameServices {
             row.set(y,player.getCurrentPlayer());
         }
         return board;
+    }
+
+    private void changePlayer() {
+        if (player.getCurrentPlayer().equals(Constants.O_CURRENT_PLAYER)) {
+            player.setCurrentPlayer(Constants.X_CURRENT_PLAYER);
+        } else {
+            player.setCurrentPlayer(Constants.O_CURRENT_PLAYER);
+        }
+
     }
 }

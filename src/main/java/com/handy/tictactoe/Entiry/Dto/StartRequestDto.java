@@ -1,11 +1,13 @@
 package com.handy.tictactoe.Entiry.Dto;
 
-import lombok.Builder;
+import lombok.Data;
 
-@Builder
 public class StartRequestDto {
     private int boardSize;
 
+    public StartRequestDto() {
+
+    }
 
     public int getBoardSize() {
         return boardSize;
@@ -13,5 +15,10 @@ public class StartRequestDto {
 
     public void setBoardSize(int boardSize) {
         this.boardSize = boardSize;
+    }
+
+    @Override
+    public String toString() {
+        return "StartDTO [boardSize=" + boardSize + "]";
     }
 }
