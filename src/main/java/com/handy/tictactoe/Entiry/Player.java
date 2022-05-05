@@ -1,6 +1,5 @@
 package com.handy.tictactoe.Entiry;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data

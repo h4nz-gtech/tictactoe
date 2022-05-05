@@ -2,9 +2,12 @@ package com.handy.tictactoe.Services;
 
 import com.handy.tictactoe.Common.Constants;
 import com.handy.tictactoe.Entiry.Board;
+import com.handy.tictactoe.Entiry.Dto.MoveRequestDto;
 import com.handy.tictactoe.Entiry.Dto.StartRequestDto;
 import com.handy.tictactoe.Entiry.Player;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 public class GameServiceImpl implements GameServices {
 
@@ -16,6 +19,8 @@ public class GameServiceImpl implements GameServices {
     @Override
     public Player startGame(StartRequestDto startRequestDto) throws Exception {
         this.player = new Player();
+        this.player.setCurrentPlayer(Constants.O_CURRENT_PLAYER);
+
         try {
             player.setBoard(configureBoardStartGame(startRequestDto.getBoardSize()));
         }catch (Exception e){
@@ -25,11 +30,28 @@ public class GameServiceImpl implements GameServices {
         return player;
     }
 
+    @Override
+    public Player move(MoveRequestDto moveRequestDto) {
+        player.setBoard(playerMove(moveRequestDto.getX(),moveRequestDto.getY()));
+        return player;
+    }
+
 
     private Board configureBoardStartGame(Integer boardSize){
         Board board =Board.builder()
                 .cells(boardServices.configureBoardCells(boardSize))
                 .build();
+        return board;
+    }
+
+    private Board playerMove(int x, int y){
+
+        Board board = player.getBoard();
+        List<List<String>> cell = board.getCells();
+        List<String> row = cell.get(x);
+        if(row.get(y).toString().isEmpty() || row.get(y).toString().isBlank() ) {
+            row.set(y,player.getCurrentPlayer());
+        }
         return board;
     }
 }

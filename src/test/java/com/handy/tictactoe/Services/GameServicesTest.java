@@ -1,8 +1,12 @@
 package com.handy.tictactoe.Services;
 
+import com.handy.tictactoe.Common.Constants;
 import com.handy.tictactoe.Entiry.Board;
+import com.handy.tictactoe.Entiry.Dto.MoveRequestDto;
 import com.handy.tictactoe.Entiry.Dto.StartRequestDto;
 import com.handy.tictactoe.Entiry.Player;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 public class GameServicesTest {
@@ -24,6 +30,13 @@ public class GameServicesTest {
     @InjectMocks
     GameServices services = new GameServiceImpl();
 
+    @Mock
+    private Player player;
+
+    @Before
+    void setUpMock(){
+        player = mock(Player.class);
+    }
 
     @Test
     void startGame_Success() throws Exception {
@@ -41,10 +54,55 @@ public class GameServicesTest {
         Board board = Board.builder().cells(cells).build();
         Player expectedResult = new Player();
         expectedResult.setBoard(board);
+        expectedResult.setCurrentPlayer(Constants.O_CURRENT_PLAYER);
 
         Mockito.when(boardServices.configureBoardCells(requestDto.getBoardSize())).thenReturn(cells);
         Player result = services.startGame(requestDto);
 
         assertEquals(expectedResult,result);
+    }
+
+    @Test
+    void moveame_Success() throws Exception {
+
+        MoveRequestDto moveRequestDto = MoveRequestDto.builder()
+                .x(1)
+                .y(1)
+                .build();
+
+        StartRequestDto requestDto = StartRequestDto.builder()
+                .boardSize(3)
+                .build();
+        List<List<String>> cells = new ArrayList<>();
+        List<String> row = new ArrayList<>();
+        List<String> row2 = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            row.add("");
+        }
+
+        for (int i = 0; i < 3; i++) {
+            if (i == 1){
+                row2.add(Constants.X_CURRENT_PLAYER);
+            }else{
+                row2.add("");
+            }
+        }
+
+        for (int i = 0; i < 3; i++) {
+            if (i == 1){
+                cells.add(row2);
+            }else{
+                cells.add(row);
+            }
+        }
+        Board board = Board.builder().cells(cells).build();
+        Player expectedResult = new Player();
+        expectedResult.setBoard(board);
+
+        lenient().when(player.getCurrentPlayer()).thenReturn(Constants.X_CURRENT_PLAYER);
+        Mockito.when(player.getBoard()).thenReturn(board);
+        Player result = services.move(moveRequestDto);
+
+        assertEquals(expectedResult.getBoard(),result.getBoard());
     }
 }
