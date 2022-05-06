@@ -47,7 +47,7 @@ public class BoardServicesImpl implements BoardServices {
         List<List<String>> cell = board.getCells();
 
         for (int i=0; i<boardSize; i++){
-            row = cell.get(x);
+            row = cell.get(i);
             for (int j = 0 ; j<row.size();j++){
                 if(j==y){
                     val=row.get(y);

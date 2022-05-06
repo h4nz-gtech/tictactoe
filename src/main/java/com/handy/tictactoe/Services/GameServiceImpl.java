@@ -23,6 +23,7 @@ public class GameServiceImpl implements GameServices {
 
         try {
             player.setBoard(configureBoardStartGame(startRequestDto.getBoardSize()));
+            player.setBoardSize(startRequestDto.getBoardSize());
         }catch (Exception e){
             throw new Exception(Constants.GENERAL_ERROR_MESSAGE);
         }
@@ -34,6 +35,7 @@ public class GameServiceImpl implements GameServices {
     public Player move(MoveRequestDto moveRequestDto) {
         changePlayer();
         player.setBoard(playerMove(moveRequestDto.getX(),moveRequestDto.getY()));
+        checkWinner(moveRequestDto.getX(),moveRequestDto.getY());
         return player;
     }
 
@@ -65,8 +67,50 @@ public class GameServiceImpl implements GameServices {
 
     }
 
-    private Boolean checkWinner(){
+    private Boolean checkWinner(int x, int y){
 
-        return false;
+        List<String> horizontalData = boardServices.getHorizontalBoardValue(player.getBoard(),player.getBoardSize(),x,y);
+        List<String> verticalData = boardServices.getVerticalBoardValue(player.getBoard(),player.getBoardSize(),x,y);
+        List<String> diagonalData = boardServices.getDiagonalBoardValue(player.getBoard(),player.getBoardSize());
+
+        if (validateBoardData(horizontalData) || validateBoardData(verticalData) || validateBoardData(diagonalData)) {
+            player.setWinner(player.getCurrentPlayer());
+            player.setFinish(true);
+            return true ;
+        }else{
+            player.setWinner("");
+            player.setFinish(false);
+            return false;
+        }
+
+    }
+
+    private Boolean validateBoardData(List<String> value){
+        String beforeValue = null;
+        Boolean status = true;
+
+        if(value.size() == 0 ){
+            status = false;
+        }
+
+        for (String data : value){
+            if(data.equals("-")){
+                status = false;
+                break;
+            }
+
+            if(beforeValue == null){
+                beforeValue = data;
+            }else{
+                status  = (beforeValue.equals(data) ? true:false);
+            }
+
+            if(!status){
+                break;
+            }
+
+        }
+
+        return status;
     }
 }

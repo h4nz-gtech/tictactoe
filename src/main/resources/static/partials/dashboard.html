@@ -3,7 +3,7 @@
 	<div layout="column" layout-align="center center">
 		<div ng-if="!game.finish">Current Player :
 			{{game.currentPlayer}}</div>
-		<div ng-if="game.finish && game.winner != null">Winner :
+		<div ng-if="game.finish">Winner :
 			{{game.winner}}</div>
 		<div ng-if="game.finish && game.winner == null">Draw</div>
 	</div>

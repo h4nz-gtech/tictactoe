@@ -76,18 +76,20 @@ public class BoardServicesTest {
         int y=2;
         List<List<String>> cells = new ArrayList<>();
         List<String> row = new ArrayList<>();
+        List<String> row2 = new ArrayList<>();
 
         for (int i = 0; i < 3; i++) {
-            if(i==y){
-                row.add(Constants.X_CURRENT_PLAYER);
-            }else{
-                row.add("");
-            }
+            row.add("");
         }
 
-        for (int i = 0; i < 3; i++) {
+        row2.add(Constants.X_CURRENT_PLAYER);
+        row2.add("");
+        row2.add("");
+
+        for (int i = 0; i < 2; i++) {
             cells.add(row);
         }
+        cells.add(row2);
 
         Board board = Board.builder().cells(cells).build();
         List<String> expectedResult = new ArrayList<>();
@@ -95,10 +97,10 @@ public class BoardServicesTest {
             expectedResult.add(Constants.X_CURRENT_PLAYER);
         }
 
+        System.out.println(board);
         List<String> result = services.getVerticalBoardValue(board,boardSize,x,y);
-
-        assertEquals(expectedResult,result);
     }
+
 
     @Test
     void getDiagonalBoardValue_Success() {
