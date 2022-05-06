@@ -100,4 +100,40 @@ public class BoardServicesTest {
         assertEquals(expectedResult,result);
     }
 
+    @Test
+    void getDiagonalBoardValue_Success() {
+        int boardSize = 3;
+        int x = 2;
+        int y=1;
+        List<List<String>> cells = new ArrayList<>();
+        List<String> row = new ArrayList<>();
+        List<String> row2 = new ArrayList<>();
+        List<String> row3 = new ArrayList<>();
+
+        row.add(Constants.X_CURRENT_PLAYER);
+        row.add("");
+        row.add("");
+        cells.add(row);
+
+        row2.add("");
+        row2.add(Constants.X_CURRENT_PLAYER);
+        row2.add("");
+        cells.add(row2);
+
+        row3.add("");
+        row3.add("");
+        row3.add(Constants.X_CURRENT_PLAYER);
+        cells.add(row3);
+
+        Board board = Board.builder().cells(cells).build();
+        List<String> expectedResult = new ArrayList<>();
+        for (int i = 0;i<3;i++){
+            expectedResult.add(Constants.X_CURRENT_PLAYER);
+        }
+
+        List<String> result = services.getDiagonalBoardValue(board,boardSize);
+
+        assertEquals(expectedResult,result);
+    }
+
 }

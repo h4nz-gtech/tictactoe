@@ -57,4 +57,16 @@ public class BoardServicesImpl implements BoardServices {
         }
         return result;
     }
+
+    @Override
+    public List<String> getDiagonalBoardValue(Board board, int boardSize) {
+        List<String> result = new ArrayList<>();
+
+        for (int i=0; i<boardSize; i++){
+            List<String> boardData = getHorizontalBoardValue(board,boardSize,i,i);
+            result.add(boardData.get(i));
+        }
+
+        return result;
+    }
 }
