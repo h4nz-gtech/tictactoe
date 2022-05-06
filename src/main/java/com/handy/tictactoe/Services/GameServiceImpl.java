@@ -64,4 +64,9 @@ public class GameServiceImpl implements GameServices {
         }
 
     }
+
+    private Boolean checkWinner(){
+
+        return false;
+    }
 }
